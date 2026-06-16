@@ -143,12 +143,14 @@ namespace Microsoft.Extensions.Logging
             long? fileSizeLimitBytes,
             int? retainedFileCountLimit,
             bool rollOnFileSizeLimit,
-            RollingInterval rollingInterval)
+            RollingInterval rollingInterval,
+            string outputTemplate = FileLoggingConfiguration.DefaultOutputTemplate)
         {
             if (pathFormat == null) throw new ArgumentNullException(nameof(pathFormat));
+            if (outputTemplate == null) throw new ArgumentNullException(nameof(outputTemplate));
             var formatter = isJson ?
                 (ITextFormatter)new RenderedCompactJsonFormatter() :
-                new MessageTemplateTextFormatter(FileLoggingConfiguration.DefaultOutputTemplate, null);
+                new MessageTemplateTextFormatter(outputTemplate, null);
             
             loggerConfiguration
                 .Enrich.FromLogContext()
